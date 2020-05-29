@@ -29,8 +29,15 @@ typedef struct Match_Struct{
     int* type;
     int* count;
 };Match
+//In Ubuntu
+//make
+//./debugging
+/*int main(int argc, char **argv){
+    if argc
+}
+//tasks.joson pretty print
 
-
+*/
 // *MAIN*
 int main(){
 
@@ -129,6 +136,7 @@ int main(){
 
 void XM2Check(char *inst_token, Match match_xm2){
     int i;
+    //NOTE: Upper case for strcmp
     for(i=0; strcmp(xm2_one_inst[i],NOINST)!=0;i++){
         if(!strcmp(xm2_one_inst[i],inst_token)){
             *match_xm2.type=ONE_INST;
@@ -171,7 +179,9 @@ char * Translate(Match match_xm2, char * lbl_token, char* inst_token, char* oper
     char * new_record;
     switch (*match_xm2.type){
     case ONE_INST:
-        
+        if(lbl_token)
+            strcpy(new_record, lbl_token);
+        else
         break;
     case TWO_INST:
 
