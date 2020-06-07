@@ -56,25 +56,24 @@ int main(int argc, char **argv)
     FILE *xm3 = fopen("solution.asm", "w+");
     FILE *xm2 = fopen(argv[1], "r");
     char record[RECORDLENGTH];
-    char delimit[]=" \t\r\n\v\f";
 
     while (fgets(record, sizeof record, xm2) != NULL)
     { // READ record from XM-2 input file
-        char *first_token = strtok(record, delimit);
+        char *first_token = strtok(record, "\t\n ");
         int legacy_num = XM2Check(first_token);
         if (legacy_num > NOMATCH)
         { //If first token is INST Token
-            char *second_token = strtok(NULL, delimit);
+            char *second_token = strtok(NULL, "\t\n ");
             Translate(xm3, legacy_num, second_token ? second_token : NOMORE);
         }
         else if (legacy_num == NOMATCH)
         {
             fprintf(xm3, "%s ", first_token);
-            char *second_token = strtok(NULL, delimit);
+            char *second_token = strtok(NULL, "\t\n ");
             legacy_num = XM2Check(second_token);
             if (legacy_num > NOMATCH)
             { //If second token is INST token
-                char *third_token = strtok(NULL, delimit);
+                char *third_token = strtok(NULL, "\t\n ");
                 Translate(xm3, legacy_num, third_token ? third_token : NOMORE);
             }
             else if (legacy_num > NOEXIST) //Avoid (NULL) in solution file
@@ -83,11 +82,11 @@ int main(int argc, char **argv)
         else if (legacy_num == COMMTKN)
             fprintf(xm3, "%s", first_token);
 
-        char *token = strtok(NULL, delimit);
+        char *token = strtok(NULL, "\t\n ");
         while (token != NULL)
         {
             fprintf(xm3, " %s", token);
-            token = strtok(NULL, delimit);
+            token = strtok(NULL, "\t\n ");
         }
         fprintf(xm3, "\n");
     }
