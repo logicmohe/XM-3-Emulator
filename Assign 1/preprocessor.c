@@ -6,7 +6,7 @@
  * 
  * Purpose： This file is the preprocessor that translates legacy XM2 instructions into
  *           XM3 instructions, then output an XM3 and report all error 
- * Last Modified: 2020.5.30
+ * Last Modified: 2020.6.8
  */
 
 #include <stdio.h>
@@ -91,6 +91,9 @@ int main(int argc, char **argv)
         }
         fprintf(xm3, "\n");
     }
+    fclose(xm2);
+    fclose(xm3);
+    return 0;
 }
 
 /*
@@ -110,13 +113,12 @@ int XM2Check(char token[])
         return NOEXIST;
     else if (token[0] == ';')
         return COMMTKN;
-    int length = strlen(token);
+    int length = strlen(token)+1;
     int i;
     char temp[length];
-    strcpy(temp, token);
     for (i = 0; i < length; i++)
     {
-        temp[i] = toupper(temp[i]);
+        temp[i] = toupper(token[i]);
     }
     for (i = 0; i < TABLECONVERTS; i++)
     {

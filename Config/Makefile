@@ -4,15 +4,16 @@
 
 # Compiler settings - Can be customized.
 CC = gcc
-CXXFLAGS = -std=c11 -Wall
+CXXFLAGS = -std=c11 -Wall -g
 LDFLAGS = -I $(INCDIR)
 
 # Makefile settings - Can be customized.
-APPNAME = assign2
+APPNAME = lab2
 EXT = .c
 SRCDIR = src
 OBJDIR = obj
 INCDIR = $(SRCDIR)/include
+
 ############## Do not change anything from here downwards! #############
 SRC = $(wildcard $(SRCDIR)/*$(EXT))
 OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
