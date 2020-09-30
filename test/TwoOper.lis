@@ -1,0 +1,59 @@
+X-Makina Assembler - Version 3.01 - Release (26 May 2020)
+Input file name: TwoOper.asm
+Time of assembly: Sat 1 Aug 2020 19:54:34 
+  1	    	     	org #1000
+  2	    	     	Start
+  3	    	     	;
+  4	    	     	; Example 1: R0 <- #1 – 0
+  5	    	     	; Result:
+  6	    	     	; R0=#0001
+  7	    	     	; C=1 (borrow not required)
+  8	    	     	; N=0 (non-negative result)
+  9	    	     	;
+ 10	1000	6808	movlz #1,R0
+ 11	1002	4280	sub #0,R0 ; R0 <- R0 - 0
+ 12	    	     	;
+ 13	    	     	; Example 2: R0 <- #1 - #2
+ 14	    	     	; Result:
+ 15	    	     	; R0=#FFFF ($-1)
+ 16	    	     	; C=0 (borrow required)
+ 17	    	     	; N=1 (negative result)
+ 18	    	     	;
+ 19	1004	6809	movlz #1,R1
+ 20	1006	4291	sub #2,R1 ; R0 <- R0 - 2
+ 21	    	     	;
+ 22	    	     	; Example 3: R0 <- #1 + ($-1)
+ 23	    	     	; Result:
+ 24	    	     	; R0=#0002 ($2)
+ 25	    	     	; C=0 (borrow required)
+ 26	    	     	; N=1 (non-negative result)
+ 27	    	     	;
+ 28	1008	680A	movlz #1,R2
+ 29	100A	40BA	add $-1,R2 ; R2 <- R2 + (-1)
+ 30	    	     	;
+ 31	    	     	; Example 4: R3 <- #1 - #1
+ 32	    	     	; Result:
+ 33	    	     	; R03=#0000 ($0)
+ 34	    	     	; C=1 (borrow not required)
+ 35	    	     	; N=0 (negative result)
+ 36	    	     	; Z=1 (zero result)
+ 37	    	     	;
+ 38	100C	680B	movlz #1,R3
+ 39	100E	4188	addc #1,R0 ; R3 <- R3 + 1
+ 40	    	     	end Start
+Successful completion of assembly
+
+** Symbol table **
+Name                               	Type	Value	Decimal
+Start                              	LBL	1000	4096
+R7                                 	REG	0007	7
+R6                                 	REG	0006	6
+R5                                 	REG	0005	5
+R4                                 	REG	0004	4
+R3                                 	REG	0003	3
+R2                                 	REG	0002	2
+R1                                 	REG	0001	1
+R0                                 	REG	0000	0
+
+.XME file: C:\Desktop\Assign3\test\TwoOper.xme
+

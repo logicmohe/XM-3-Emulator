@@ -1,0 +1,47 @@
+X-Makina Assembler - Version 3.01 - Release (26 May 2020)
+Input file name: RegIni.asm
+Time of assembly: Sat 1 Aug 2020 19:55:42 
+  1	    	     	CapA equ 'A' ; Equated character constant
+  2	    	     	Limit equ $255 ; Equated decimal constant $255
+  3	    	     	NUL equ #0 ; Equated hex constant #0
+  4	    	     	;
+  5	    	     	org #800
+  6	    	     	Start
+  7	    	     	; To assign R0 the value #2010:
+  8	0800	6080	movl #10,R0
+  9	0802	7800	movh #20,R0
+ 10	    	     	;
+ 11	    	     	; To assign CapA to the lower byte of R3:
+ 12	0804	620B	movl CapA,R3
+ 13	0806	6803	MOVLZ $0,R3
+ 14	0808	77FC	MOVLS #FF,R4
+ 15	    	     	ORG #1000
+ 16	    	     	; Data
+ 17	1000	0000	Array bss $16 ; Reserve 16 bytes
+ 18	    	     	; Code
+ 19	    	     	ORG #2000
+ 20	2000	6000	MOVL Array,R0 ; Least-significant byte of Array assigned to R0
+ 21	2002	7880	MOVH Array,R0 ; Most-significant byte of Array assigned to R0
+ 22	    	     	ORG #80
+ 23	    	     	end Start
+
+Successful completion of assembly
+
+** Symbol table **
+Name                               	Type	Value	Decimal
+Array                              	LBL	1000	4096
+Start                              	LBL	0800	2048
+NUL                                	LBL	0000	0
+Limit                              	LBL	00FF	255
+CapA                               	LBL	0041	65
+R7                                 	REG	0007	7
+R6                                 	REG	0006	6
+R5                                 	REG	0005	5
+R4                                 	REG	0004	4
+R3                                 	REG	0003	3
+R2                                 	REG	0002	2
+R1                                 	REG	0001	1
+R0                                 	REG	0000	0
+
+.XME file: C:\Desktop\Assign3\test\RegIni.xme
+

@@ -1,0 +1,120 @@
+X-Makina Assembler - Version 3.01 - Release (26 May 2020)
+Input file name: Normal.asm
+Time of assembly: Sat 1 Aug 2020 13:13:14 
+  1	    	     	;
+  2	    	     	; Input and Output
+  3	    	     	;
+  4	    	     	; Device polling - example KB input and SCR output
+  5	    	     	; Echo each character read, stop on 'Z'
+  6	    	     	; R0 - base address (KbCSR address 0002)
+  7	    	     	; R1 - character read/written
+  8	    	     	; R2 - scratch register
+  9	    	     	;
+ 10	    	     	; ECED 3403
+ 11	    	     	; 25 Mar 2020 - XM3 upgrade
+ 12	    	     	;  8 May 2019 - Initial version
+ 13	    	     	;
+ 14	    	     	; KB and SCR control bits (OV, DBA, and IE = 0):
+ 15	    	     	;
+ 16	    	     	KB_SET	equ	#12	; KB initialization: ENA=1 I/O=1
+ 17	    	     	SCR_SET	equ	#10	; SCR initialization: ENA=1 I/O=0 
+ 18	    	     	;
+ 19	    	     	; KB and SCR status bits (check on poll):
+ 20	    	     	;
+ 21	    	     	KB_DBA	equ	#4	; KB - data byte available status bit (input)
+ 22	    	     	SCR_DBA	equ	#4	; SCR - data buffer available status bit (output)
+ 23	    	     	;
+ 24	    	     		org	#2
+ 25	    	     	;
+ 26	    	     	; Clock control/status and count registers are ignored (overwrites memory)
+ 27	    	     	;
+ 28	0002	0000	KbCSR	bss	#1	; Keyboard control/status register
+ 29	0003	0000	KbDR	bss	#1	; Keyboard data register (input)
+ 30	0004	0000	ScrCSR	bss	#1	; Screen control/status register
+ 31	0005	0000	ScrDR	bss	#1	; Screen data register (output)
+ 32	    	     	;
+ 33	    	     		org	#1000
+ 34	    	     	Start
+ 35	1000	6810		movlz	KbCSR,R0	; R0 - address of KbSCR (base addr)
+ 36	    	     	;
+ 37	    	     	; Initialize KB and SCR
+ 38	1002	6092		movl	KB_SET,R2	; R2 = KB init bits
+ 39	1004	6082		movl	SCR_SET,R2	; R2 = SCR init bits
+ 40	1006	C150		str.b	R2,R0,$2	; SCR CSR (R0 base addr + 2) = ENA and Output
+ 41	    	     	;
+ 42	    	     	; Input-output loop - repeat until 'Z' entered
+ 43	    	     	;
+ 44	    	     	; InLoop waits for character to be entered
+ 45	    	     	; Read KB status register until DBA (data byte available) is set
+ 46	    	     	;
+ 47	    	     	InLoop	
+ 48	1008	479A		and	KB_DBA,R2	; If zero, repeat
+ 49	    	     	;
+ 50	    	     	; Repeat KB status poll (DBA) if data byte not available
+ 51	    	     	; 
+ 52	100A	2408		cex	eq,$1,$0
+ 53	100C	23FD		bra	InLoop		; Goto InLoop if DBA = 0
+ 54	    	     	;
+ 55	    	     	; Data byte available - read KbDR
+ 56	    	     	;
+ 57	100E	80C1		ldr.b	R0,#1,R1	; R1 = kb input (ch)
+ 58	    	     	;
+ 59	1010	C1C8		str.b	R1,R0,#3	; ScrDR (KbCSR+3) = R1 (ch)
+ 60	    	     	;
+ 61	    	     	; Wait until output completed
+ 62	    	     	; Poll output DBA (data buffer available)
+ 63	    	     	;
+ 64	    	     	OutLoop
+ 65	1012	8142		ldr.b	R0,#2,R2	; R2 = ScrCSR
+ 66	1014	47DA		and.b	SCR_DBA,R2	; Is DBA set?
+ 67	    	     	;
+ 68	    	     	; Repeat SCR status poll (DBA) if data buffer not available
+ 69	    	     	;
+ 70	1016	2408		cex	eq,$1,$0
+ 71	1018	23FC		bra	OutLoop		; Goto OutLoop if DBA = 0
+ 72	    	     	;
+ 73	    	     	; Output done
+ 74	    	     	; Check for 'Z'
+ 75	    	     	;
+ 76	101A	6AD2		movlz	'Z',R2
+ 77	101C	4551		cmp.b	R2,R1
+ 78	    	     	;
+ 79	    	     	; Repeat input-output if not 'Z'
+ 80	    	     	;
+ 81	101E	2448		cex	ne,$1,$0
+ 82	1020	23F3		bra 	InLoop		; Goto InLoop if R2 <> 0
+ 83	    	     	;
+ 84	    	     	; All done - Wait for ^C or breakpoint
+ 85	    	     	;
+ 86	    	     	DoneLoop
+ 87	1022	23FF		bra	DoneLoop
+ 88	    	     	;
+ 89	    	     		end	Start
+
+Successful completion of assembly
+
+** Symbol table **
+Name                               	Type	Value	Decimal
+DoneLoop                           	LBL	1022	4130
+OutLoop                            	LBL	1012	4114
+InLoop                             	LBL	1008	4104
+Start                              	LBL	1000	4096
+ScrDR                              	LBL	0005	5
+ScrCSR                             	LBL	0004	4
+KbDR                               	LBL	0003	3
+KbCSR                              	LBL	0002	2
+SCR_DBA                            	LBL	0004	4
+KB_DBA                             	LBL	0004	4
+SCR_SET                            	LBL	0010	16
+KB_SET                             	LBL	0012	18
+R7                                 	REG	0007	7
+R6                                 	REG	0006	6
+R5                                 	REG	0005	5
+R4                                 	REG	0004	4
+R3                                 	REG	0003	3
+R2                                 	REG	0002	2
+R1                                 	REG	0001	1
+R0                                 	REG	0000	0
+
+.XME file: C:\Desktop\Assign3\test\Normal.xme
+

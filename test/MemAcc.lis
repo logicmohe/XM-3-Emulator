@@ -1,0 +1,41 @@
+X-Makina Assembler - Version 3.01 - Release (26 May 2020)
+Input file name: MemAcc.asm
+Time of assembly: Sat 1 Aug 2020 20:06:08 
+  1	    	     	org #1000
+  2	1000	0000	Data1 bss #2
+  3	    	     	;
+  4	    	     	org #2000
+  5	    	     	Start
+  6	    	     	;
+  7	    	     	; R0 <- address of Data1
+  8	2000	6000	movl Data1,R0 ; Low-byte of R0 <- #00
+  9	2002	7880	movh Data1,R0 ; High-byte of R0 <- #10
+ 10	    	     	;
+ 11	    	     	; Write byte #F0 to Data1[0]
+ 12	2004	6F81	movlz #F0,R1 ; R1 <- #F0
+ 13	2006	C048	str.b R1,R0,#0 ; mem[R0 + #0] <- R1
+ 14	    	     	;
+ 15	    	     	; Write byte #0F to Data1[1]
+ 16	2008	6879	movlz #0F,R1 ; R1 <- $0F
+ 17	200A	C0C8	str.b R1,R0,#1 ; mem[R0 + #1] <- R1
+ 18	    	     	;
+ 19	    	     	; Retrieve word from Data1[0]
+ 20	200C	8002	ldr.w R0,#0,R2 ; R2 <- mem[R0 + #0]
+ 21	    	     	end Start
+Successful completion of assembly
+
+** Symbol table **
+Name                               	Type	Value	Decimal
+Start                              	LBL	2000	8192
+Data1                              	LBL	1000	4096
+R7                                 	REG	0007	7
+R6                                 	REG	0006	6
+R5                                 	REG	0005	5
+R4                                 	REG	0004	4
+R3                                 	REG	0003	3
+R2                                 	REG	0002	2
+R1                                 	REG	0001	1
+R0                                 	REG	0000	0
+
+.XME file: C:\Desktop\Assign3\test\MemAcc.xme
+

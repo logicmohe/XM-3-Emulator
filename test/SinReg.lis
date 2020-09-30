@@ -1,0 +1,41 @@
+X-Makina Assembler - Version 3.01 - Release (26 May 2020)
+Input file name: SinReg.asm
+Time of assembly: Sat 1 Aug 2020 21:31:20 
+  1	    	     	org #80
+  2	    	     	
+  3	    	     	Data
+  4	0080	0041	byte 'A' ; Low-order byte
+  5	0081	0042	byte 'B' ; High-order byte
+  6	    	     	;
+  7	    	     	org #1000
+  8	    	     	Start
+  9	1000	6C00	movlz Data,R0 ; R0 <- Address of Data
+ 10	1002	5800	ld R0,R0 ; R0 <- BA (#4241)
+ 11	    	     	;
+ 12	1004	4E00	swpb R0 ; R0 <- AB (#4142)
+ 13	    	     	
+ 14	    	     	org #1000
+ 15	1000	7079	movls #0F,R1 ; R1 <- #FF0F
+ 16	1002	4E09	sxt R1 ; R1 <- #000F
+ 17	    	     	;
+ 18	1004	6C01	movlz #80,R1 ; R1 <- #0080
+ 19	1006	4E09	sxt R1 ; R1 <- #FF80
+ 20	    	     	
+ 21	    	     	end Start
+Successful completion of assembly
+
+** Symbol table **
+Name                               	Type	Value	Decimal
+Start                              	LBL	1000	4096
+Data                               	LBL	0080	128
+R7                                 	REG	0007	7
+R6                                 	REG	0006	6
+R5                                 	REG	0005	5
+R4                                 	REG	0004	4
+R3                                 	REG	0003	3
+R2                                 	REG	0002	2
+R1                                 	REG	0001	1
+R0                                 	REG	0000	0
+
+.XME file: C:\Desktop\Assign3\test\SinReg.xme
+

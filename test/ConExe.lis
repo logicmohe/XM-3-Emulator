@@ -1,0 +1,36 @@
+X-Makina Assembler - Version 3.01 - Release (26 May 2020)
+Input file name: ConExe.asm
+Time of assembly: Sat 1 Aug 2020 19:58:35 
+  1	    	     	; Assume Data, Alpha, and Beta are R0, R1, and R2, respectively
+  2	    	     	; IF Data = 8 THEN
+  3	    	     	org #1000
+  4	    	     	Start
+  5	1000	45A0	cmp $8,R0
+  6	    	     	;
+  7	    	     	; Test the PSW bit for the EQ condition (Z=1)
+  8	    	     	; If Z=1, then do the instruction following the CEX, otherwise skip
+  9	    	     	;
+ 10	1002	2409	cex eq,$1,$1
+ 11	    	     	;
+ 12	1004	6809	Movlz $1,R1 ; Executed if EQ, skipped if NE
+ 13	    	     	;
+ 14	1006	6811	movlz $2,R1 ; Skipped if EQ, executed if NE
+ 15	    	     	;
+ 16	1008	680A	movlz $1,R2
+ 17	    	     	end Start
+Successful completion of assembly
+
+** Symbol table **
+Name                               	Type	Value	Decimal
+Start                              	LBL	1000	4096
+R7                                 	REG	0007	7
+R6                                 	REG	0006	6
+R5                                 	REG	0005	5
+R4                                 	REG	0004	4
+R3                                 	REG	0003	3
+R2                                 	REG	0002	2
+R1                                 	REG	0001	1
+R0                                 	REG	0000	0
+
+.XME file: C:\Desktop\Assign3\test\ConExe.xme
+
